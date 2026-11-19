@@ -1,0 +1,37 @@
+name: ci
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  hygiene:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - uses: pre-commit/action@v3.0.1
+
+  docs-structure:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Every ADR has required sections
+        run: |
+          fail=0
+          for f in docs/adr/[0-9]*.md; do
+            for h in "## Context" "## Decision" "## Consequences"; do
+              grep -q "^$h" "$f" || { echo "$f missing: $h"; fail=1; }
+            done
+          done
+          exit $fail
+      - name: Every project has a README
+        run: |
+          for d in projects/*/; do
+            test -f "$d/README.md" || { echo "missing README in $d"; exit 1; }
+          done
