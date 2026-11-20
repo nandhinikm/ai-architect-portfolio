@@ -4,7 +4,7 @@
 flowchart TB
     user([Employee]) -->|asks questions| copilot[Enterprise Copilot]
     copilot -->|retrieves documents| lake[(Fabric OneLake)]
-    copilot -->|generates answers| llm[LLM provider]
+    copilot -->|generates answers| llm[Azure OpenAI]
     copilot -->|authenticates via| idp[Entra ID]
     admin([Platform admin]) -->|monitors cost and quality| copilot
 ```
