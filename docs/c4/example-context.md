@@ -16,7 +16,7 @@ flowchart LR
     ui[Web UI] --> api[API service]
     api --> gw[LLM gateway]
     api --> search[(Search index)]
-    gw --> llm[LLM provider]
+    gw --> llm[Azure OpenAI]
     ingest[Ingestion pipeline] --> search
     lake[(OneLake)] --> ingest
     api --> obs[Tracing and metrics]
